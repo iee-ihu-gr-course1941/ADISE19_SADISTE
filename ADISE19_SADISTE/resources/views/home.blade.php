@@ -3,8 +3,9 @@
 @section('title', 'Home')
 
 @section('content')
-<div class="container-fluid">
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+<div class="container-fluid" style="padding:0; margin:0; padding-top:-25px; margin-top:-25px">
+    <div id="myCarousel" class="carousel slide container-fluid " style="padding:0; margin:0;" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
             <li data-target="#myCarousel" data-slide-to="1"></li>
