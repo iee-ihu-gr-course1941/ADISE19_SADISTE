@@ -22,6 +22,9 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->integer('wins')->default(0);
+            $table->integer('loses')->default(0);
+            $table->integer('games')->default(0);
         });
     }
 
