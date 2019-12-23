@@ -23,15 +23,6 @@ public function pickCard($index)
     return $card;
 }
 
-public function print()
-{
-    foreach($this->cards as $card)
-    {
-        echo $card->getColor() . ", ";
-        echo $card->getType() . "\n";
-    }
-}
-
 }
 
 ?>

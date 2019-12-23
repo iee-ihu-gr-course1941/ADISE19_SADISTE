@@ -18,7 +18,15 @@ public function count()
 public function remove($index)
 {
     unset($this->cards[$index]);
-    array_values($this->cards);
+    $this->cards = array_values($this->cards);
+}
+
+public function print()
+{
+    foreach($this->cards as $card)
+    {
+        $card->print();
+    }
 }
 
 }

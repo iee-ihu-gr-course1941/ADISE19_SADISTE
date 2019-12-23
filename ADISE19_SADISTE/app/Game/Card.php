@@ -41,6 +41,11 @@ class Card
         return $this->type;
     }    
 
+    public function print()
+    {
+        echo "Card{ color:" . $this->getColor() . ", type:" . $this->getType() . " }\n";
+    }
+
 }
 
 ?>
