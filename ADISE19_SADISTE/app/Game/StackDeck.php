@@ -26,6 +26,25 @@ public function getCardsForDrawDeck()
     return $cards;
 }
 
+public function showTopCard()
+{
+    echo "Stack top card: ";
+    $this->cards[sizeof($this->cards)-1]->print();
+}
+
+public function getTopCard()
+{
+    return $this->cards[sizeof($this->cards)-1];
+}
+
+public function print()
+{
+    foreach($this->cards as $card)
+    {
+        $card->print();
+    }
+}
+
 }
 
 ?>

@@ -3,7 +3,6 @@
 include '../Enum/CardColor.php';
 include '../Enum/CardType.php';
 
-
 class Card 
 {
 

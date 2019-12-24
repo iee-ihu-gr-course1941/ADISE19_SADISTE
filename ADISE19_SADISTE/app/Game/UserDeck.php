@@ -21,11 +21,24 @@ public function getCards()
     return $this->cards;
 }
 
+public function getCard($index)
+{
+    return $this->cards[$index];
+}
+
 public function pickCard($index)
 {
     $card = $this->cards[$index];
     $this->remove($index);
     return $card;
+}
+
+public function print()
+{
+    foreach($this->cards as $card)
+    {
+        $card->print();
+    }
 }
 
 }
