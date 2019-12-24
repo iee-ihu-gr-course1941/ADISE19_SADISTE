@@ -5,11 +5,6 @@ abstract class Deck implements Countable
 
 protected $cards;
 
-public function __construct()
-{
-    $this->cards = array();
-}
-
 public function count()
 {
     return sizeof($this->cards);
