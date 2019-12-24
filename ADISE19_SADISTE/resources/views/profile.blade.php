@@ -20,9 +20,9 @@
                     <td>Loses</td>
                 </tr>
                 <tr>
-                    <td>10</td> <!-- examples -->
-                    <td>6</td>
-                    <td>4</td>
+                    <td>{{ Auth::user()->games }}</td>
+                    <td>{{ Auth::user()->wins }}</td>
+                    <td>{{ Auth::user()->loses }}</td>
                 </tr>
             </table>
         </div>

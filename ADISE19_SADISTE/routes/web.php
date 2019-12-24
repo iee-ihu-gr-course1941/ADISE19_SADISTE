@@ -21,6 +21,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/game', 'GameController@index')->name('game');
 
-Route::get('/profile', 'ProfileController@index')->name('profile');
+Route::get('/profile/{username}', 'UserController@index')->name('profile.index');
 
 Route::get('/about', 'AboutController@index')->name('about');
