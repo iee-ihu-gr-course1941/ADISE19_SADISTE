@@ -15,6 +15,7 @@ private $playingOrder;
 private $drawDeck;
 private $stackDeck;
 private $usersDecks;
+private $changedColor;
 
 public function __construct()
 {
@@ -24,6 +25,7 @@ public function __construct()
     $this->drawDeck = new DrawDeck();
     $this->stackDeck = new StackDeck();
     $this->usersDecks = array(new UserDeck(), new UserDeck());
+    $this->changedColor = null;
 
     $this->drawDeck->shuffle();
     $this->stackDeck->addCard($this->drawDeck->draw());
@@ -39,11 +41,16 @@ private function isLegalMove($index)
 {
     $playerCard = $this->usersDecks[$this->currentPlayer]->getCard($index);
     $stackCard = $this->stackDeck->getTopCard();
-    if($playerCard->getColor() == $stackCard->getColor() || $playerCard->getType() == $stackCard->getType())
-    {
-        return True;
-    }
-    return false;
+
+    return ( 
+        ($stackCard->getColor() == "black" && $playerCard->getColor() == $this->changedColor)
+        ||
+        ($playerCard->getColor() == "black")
+        ||
+        ($playerCard->getColor() == $stackCard->getColor())
+        ||
+        ($playerCard->getType() == $stackCard->getType())
+    );
 }
 
 private function nextPlayer()
@@ -77,6 +84,22 @@ private function changeRotation()
     $this->clockwiseRotation = !$this->clockwiseRotation;
 }
 
+#TODO update this function to work with the front end
+private function changeColor()
+{
+    while(true)
+    {
+        shell_exec(reset);
+        $ans = readLine("Choose a color (red, green, blue, yellow): ");
+        if($ans == "red" || $ans == "green" || $ans == "blue" || $ans == "yellow")
+        {
+            $this->changedColor = $ans;
+            return;
+        }
+        
+    }
+}
+
 /*
 private function givePlusFour()
 {
@@ -107,7 +130,6 @@ public function playCard($index)
 
         $card = $this->usersDecks[$this->currentPlayer]->pickCard($index);
         $this->stackDeck->addCard($card);
-        $this->nextPlayer();
 
         if($playerCard->getType() == "reverse")
         {
@@ -130,8 +152,10 @@ public function playCard($index)
         }
         else if($playerCard->getType() == "wild")
         {
-            //TODO Change Color
+            $this->changeColor();
         }
+
+        $this->nextPlayer();
 
         return True;
     }
