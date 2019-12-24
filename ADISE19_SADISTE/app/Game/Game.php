@@ -34,18 +34,7 @@ public function __construct()
     }
 }
 
-public function playCard($index)
-{
-    if($this->isLegalMove($index))
-    {
-        $card = $this->usersDecks[$this->currentPlayer]->pickCard($index);
-        $this->stackDeck->addCard($card);
-        $this->nextPlayer();
-        return True;
-    }
-    return False;
-}
-
+// TODO update fuctnion with exceptions
 private function isLegalMove($index)
 {
     $playerCard = $this->usersDecks[$this->currentPlayer]->getCard($index);
@@ -83,19 +72,13 @@ private function nextPlayer()
     }
 }
 
-private function skipPlayer()
-{
-    $this->nextPlayer();
-    $this->nextPlayer();
-}
-
-public function changeRotation()
+private function changeRotation()
 {
     $this->clockwiseRotation = !$this->clockwiseRotation;
 }
 
 /*
-public function givePlusFour()
+private function givePlusFour()
 {
     // Give next player +4 cards
     // If next player stack with a +2 or a +4 card give to stack to the next player
@@ -103,21 +86,69 @@ public function givePlusFour()
 */
 
 /*
-public function givePlusTwo()
+private function givePlusTwo()
 {
     // Give next player +2 cards
     // If next player stack with a +2 or a +4 card give to stack to the next player
 }
 */
 
+private function draw()
+{
+    $this->usersDecks[$this->currentPlayer]->addCard($this->drawDeck->draw());
+    $this->nextPlayer();
+}
+
+public function playCard($index)
+{
+    if($this->isLegalMove($index))
+    {
+        $playerCard = $this->usersDecks[$this->currentPlayer]->getCard($index);
+
+        $card = $this->usersDecks[$this->currentPlayer]->pickCard($index);
+        $this->stackDeck->addCard($card);
+        $this->nextPlayer();
+
+        if($playerCard->getType() == "reverse")
+        {
+            $this->changeRotation();
+        }
+        else if($playerCard->getType() == "draw")
+        {
+            if($playerCard->getColor() == "black")
+            {
+                //TODO draw +4
+            }
+            else
+            {
+                //TODO draw +2
+            }
+        }
+        else if($playerCard->getType() == "skip")
+        {
+            $this->nextPlayer();
+        }
+        else if($playerCard->getType() == "wild")
+        {
+            //TODO Change Color
+        }
+
+        return True;
+    }
+    return False;
+}
+
 public function shell()
 {
+    $message = "";
     while(True){
+        shell_exec(reset);
+        echo "Message: " . $message . "\n";
         $this->print();
         echo "\nPlayer: " . $this->currentPlayer . "\n";
         $ans = readLine("type your move: ");
 
-        if($ans == "q")
+        if($ans == "exit")
         {
             return;
         }
@@ -126,12 +157,17 @@ public function shell()
         {
             if($this->playCard($ans-1))
             {
-                echo "Card played\n";
+                $message = "Card played";
             }
             else
             {
-                echo "You can't do that, try again\n";
+                $message = "You can't do that, try again";
             }
+        }
+
+        if($ans == "draw")
+        {
+            $this->draw();
         }
         
     }
@@ -148,9 +184,11 @@ public function print()
     echo "==========================================\n";
     echo "Player's 0 deck:\n";
     $this->usersDecks[0]->print();
+    echo "Number of cards: " . $this->usersDecks[0]->size() . "\n";
     echo "==========================================\n";
     echo "Player's 1 deck:\n";
     $this->usersDecks[1]->print();
+    echo "Number of cards: " . $this->usersDecks[1]->size() . "\n";
     echo "==========================================\n";
 }
 
