@@ -39,9 +39,16 @@
             </table>
         </div>
     </div>
+    <br><br>
     <div class="row">
         <div class="col-4">
             <button onclick="location.href='{{ route('edit_profile.edit',['username' => Auth::user()->username]) }}'" class="btn btn-lg btn-primary btn-block">Edit Profile</button>
+        </div>
+        <div class="col-4">
+            <button onclick="location.href='{{ route('reset_password.reset_password',['username' => Auth::user()->username]) }}'" class="btn btn-lg btn-primary btn-block">Reset Password</button>
+        </div>
+        <div class="col-4">
+            <button onclick="location.href='{{ route('delete_profile.delete_profile',['username' => Auth::user()->username]) }}'" class="btn btn-lg btn-danger btn-block">Delete Profile</button>
         </div>
     </div>
 </div>
