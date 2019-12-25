@@ -16,6 +16,11 @@ public function remove($index)
     $this->cards = array_values($this->cards);
 }
 
+public function size()
+{
+    return sizeof($this->cards);
+}
+
 public function print()
 {
     foreach($this->cards as $card)

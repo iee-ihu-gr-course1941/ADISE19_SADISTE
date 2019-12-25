@@ -33,11 +33,6 @@ public function pickCard($index)
     return $card;
 }
 
-public function size()
-{
-    return sizeof($this->cards);
-}
-
 public function print()
 {
     foreach($this->cards as $card)

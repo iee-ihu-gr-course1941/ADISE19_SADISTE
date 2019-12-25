@@ -9,23 +9,25 @@ class Game
 {
 
 private $clockwiseRotation;
-//private $stackPlusCards;
 private $currentPlayer;
 private $playingOrder;
 private $drawDeck;
 private $stackDeck;
 private $usersDecks;
 private $changedColor;
+private $stopGame;
 
 public function __construct()
 {
     $this->clockwiseRotation = True;
+    $this->stackPlusCards = 0;
     $this->currentPlayer = 0;
     $this->playingOrder = array(0, 1);
     $this->drawDeck = new DrawDeck();
     $this->stackDeck = new StackDeck();
     $this->usersDecks = array(new UserDeck(), new UserDeck());
     $this->changedColor = null;
+    $this->stopGame = False;
 
     $this->drawDeck->shuffle();
     $this->stackDeck->addCard($this->drawDeck->draw());
@@ -36,7 +38,6 @@ public function __construct()
     }
 }
 
-// TODO update fuctnion with exceptions
 private function isLegalMove($index)
 {
     $playerCard = $this->usersDecks[$this->currentPlayer]->getCard($index);
@@ -77,6 +78,12 @@ private function nextPlayer()
             $this->currentPlayer = sizeof($this->playingOrder)-1;
         }
     }
+
+    if($this->drawDeck->size() < 10)
+    {
+        $cards = $this->stackDeck->getCardsForDrawDeck();
+        $this->drawDeck->addCards($cards);
+    }
 }
 
 private function changeRotation()
@@ -100,26 +107,34 @@ private function changeColor()
     }
 }
 
-/*
 private function givePlusFour()
 {
-    // Give next player +4 cards
-    // If next player stack with a +2 or a +4 card give to stack to the next player
+    $this->nextPlayer();
+    for($counter = 0;$counter < 4;$counter++)
+    {
+        $this->usersDecks[$this->currentPlayer]->addCard($this->drawDeck->draw());
+    }
 }
-*/
 
-/*
 private function givePlusTwo()
 {
-    // Give next player +2 cards
-    // If next player stack with a +2 or a +4 card give to stack to the next player
+    $this->nextPlayer();
+    for($counter = 0;$counter < 2;$counter++)
+    {
+        $this->usersDecks[$this->currentPlayer]->addCard($this->drawDeck->draw());
+    }
 }
-*/
 
 private function draw()
 {
     $this->usersDecks[$this->currentPlayer]->addCard($this->drawDeck->draw());
     $this->nextPlayer();
+}
+
+//TODO update this function to work with the front end
+private function playerWon()
+{
+    $this->stopGame = True;
 }
 
 public function playCard($index)
@@ -131,31 +146,38 @@ public function playCard($index)
         $card = $this->usersDecks[$this->currentPlayer]->pickCard($index);
         $this->stackDeck->addCard($card);
 
-        if($playerCard->getType() == "reverse")
+        if($this->usersDecks[$this->currentPlayer]->size() == 0)
         {
-            $this->changeRotation();
+            $this->playerWon();
         }
-        else if($playerCard->getType() == "draw")
+        else
         {
-            if($playerCard->getColor() == "black")
+            if($playerCard->getType() == "reverse")
             {
-                //TODO draw +4
+                $this->changeRotation();
             }
-            else
+            else if($playerCard->getType() == "draw")
             {
-                //TODO draw +2
+                if($playerCard->getColor() == "black")
+                {
+                    $this->givePlusFour();
+                }
+                else
+                {
+                    $this->givePlusTwo();
+                }
             }
-        }
-        else if($playerCard->getType() == "skip")
-        {
+            else if($playerCard->getType() == "skip")
+            {
+                $this->nextPlayer();
+            }
+            else if($playerCard->getType() == "wild")
+            {
+                $this->changeColor();
+            }
+
             $this->nextPlayer();
         }
-        else if($playerCard->getType() == "wild")
-        {
-            $this->changeColor();
-        }
-
-        $this->nextPlayer();
 
         return True;
     }
@@ -167,34 +189,42 @@ public function shell()
     $message = "";
     while(True){
         shell_exec(reset);
-        echo "Message: " . $message . "\n";
-        $this->print();
-        echo "\nPlayer: " . $this->currentPlayer . "\n";
-        $ans = readLine("type your move: ");
-
-        if($ans == "exit")
+        if($this->stopGame)
         {
-            return;
+            break;
         }
-
-        if($ans >= 1 && $ans <= 7)
+        else
         {
-            if($this->playCard($ans-1))
+            echo "Message: " . $message . "\n";
+            $this->print();
+            echo "\nPlayer: " . $this->currentPlayer . "\n";
+            $ans = readLine("type your move: ");
+
+            if($ans == "exit")
             {
-                $message = "Card played";
+                return;
             }
-            else
+            else if($ans >= 1 && $ans <= 7)
             {
-                $message = "You can't do that, try again";
+                if($this->playCard($ans-1))
+                {
+                    $message = "Card played";
+                }
+                else
+                {
+                    $message = "You can't do that, try again";
+                }
+            }
+            else if($ans == "draw")
+            {
+                $this->draw();
             }
         }
-
-        if($ans == "draw")
-        {
-            $this->draw();
-        }
-        
     }
+
+    echo "===============================================\n";
+    echo "\nPlayer " . $this->currentPlayer . " won\n";
+    echo "===============================================\n";
 }
 
 public function print()
