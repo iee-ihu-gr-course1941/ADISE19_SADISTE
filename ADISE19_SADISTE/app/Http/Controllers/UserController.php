@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use App\Traits\UploadTrait;
 
 class UserController extends Controller
 {
+    use UploadTrait;
+
     public function index(User $user)
     {
         return view('profile', ['username' => User::findOrFail($user)]);
@@ -32,30 +35,70 @@ class UserController extends Controller
 
     public function update_profile(Request $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'username' => 'required|string|max:255|unique:users',
-            'image' => 'required|string',
-        ]);
+//        $request->validate([
+//            'name' => 'string|max:255',
+//            'email' => 'string|email|max:255|unique:users',
+//            'username' => 'string|max:255|unique:users',
+//            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+//        ]);
 
         $user = Auth::user();
 
-        // $user->name =  $request->input('name');
-        // $user->email = $request->input('email');
-        // $user->username = $request->input('username');
-        $user->image = $request->input('image');
+        if ($request->input('name') != null)
+        {
+            $request->validate([
+                'name' => 'string|max:255',
+            ]);
+            $user->name = $request->input('name');
+        }
+        if ($request->input('email') != null)
+        {
+            $request->validate([
+                'email' => 'string|email|max:255|unique:users',
+            ]);
+            $user->email = $request->input('email');
+        }
+        if ($request->input('username') != null)
+        {
+            $request->validate([
+                'username' => 'string|max:255|unique:users',
+            ]);
+            $user->username = $request->input('username');
+        }
+        if ($request->input('image') != null)
+        {
+            $request->validate([
+                'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+            $user->image = $request->input('image');
+        }
 
-        $user->fill($data)->save();
+        if ($request->has('image'))
+        {
+            // Get image file
+            $image = $request->file('image');
+            // Make a image name based on user name and current timestamp
+            $name = Str::slug($request->input('name')) . '_' . time();
+            // Define folder path
+            $folder = '/storage/profiles/';
+            // Make a file path where image will be stored [ folder path + file name + file extension]
+            $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
+            // Upload image
+            $this->uploadOne($image, $folder, 'public', $name);
+            // Set user profile image path in database to filePath
+            $user->image = $filePath;
+        }
+
+        $user->save();
 
         return redirect( route('profile.index',['username' => Auth::user()->username]) );
     }
 
     public function update_password(Request $request)
     {
-        // $data = $request->validate([
-        //     'required', 'string', 'min:8', 'confirmed',
-        // ]);
+        $request->validate([
+            'password' => 'required', 'string', 'min:8', 'confirmed',
+        ]);
 
         $curr_password = $request->old_password;
         $new_password  = $request->password;

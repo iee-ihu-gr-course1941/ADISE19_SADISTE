@@ -25,7 +25,7 @@ class CreateUsersTable extends Migration
             $table->integer('wins')->default(0);
             $table->integer('loses')->default(0);
             $table->integer('games')->default(0);
-            $table->string('image')->default('default.png');
+            $table->string('image')->default('/storage/profiles/default.png');
         });
     }
 

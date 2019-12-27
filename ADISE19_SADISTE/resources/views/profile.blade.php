@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-4">
             <div class="card hovercard">
-                <img src="/storage/profiles/{{ Auth::user()->image }}" height="100%" width="100%"/>
+                <img src="{{ Auth::user()->image }}" height="100%" width="100%"/>
             </div>
         </div>
 
