@@ -1,7 +1,9 @@
 <?php
 
-include '../Enum/CardColor.php';
-include '../Enum/CardType.php';
+namespace App\Game;
+
+use App\Enum\CardColor;
+use App\Enum\CardType;
 
 class Card 
 {

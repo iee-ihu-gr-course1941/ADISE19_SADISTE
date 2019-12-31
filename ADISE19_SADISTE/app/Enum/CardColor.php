@@ -1,6 +1,8 @@
 <?php
 
-include_once "BasicEnum.php";
+namespace App\Enum;
+
+use App\Enum\BasicEnum;
 
 abstract class CardColor extends BasicEnum
 {

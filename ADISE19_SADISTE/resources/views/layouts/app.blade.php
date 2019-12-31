@@ -59,7 +59,7 @@
                                 <a class="nav-link" href="{{ route('home') }}"> {{ __('Home') }} </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('game') }}"> {{ __('Game') }} </a>
+                                <a class="nav-link" href="{{ route('game_lobby') }}"> {{ __('Game') }} </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('profile.index',['username' => Auth::user()->username]) }}"> {{ Auth::user()->username }} </a>

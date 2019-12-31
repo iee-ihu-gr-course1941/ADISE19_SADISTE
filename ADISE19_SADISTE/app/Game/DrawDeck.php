@@ -1,7 +1,9 @@
 <?php
 
-include_once "Deck.php";
-include_once "Card.php";
+namespace App\Game;
+
+use App\Game\Deck;
+use App\Game\Card;
 
 class DrawDeck extends Deck
 {

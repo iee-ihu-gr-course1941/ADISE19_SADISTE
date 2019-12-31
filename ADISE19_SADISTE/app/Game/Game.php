@@ -1,9 +1,6 @@
 <?php
 
-include_once 'DrawDeck.php';
-include_once 'StackDeck.php';
-include_once 'UserDeck.php';
-include_once 'Card.php';
+namespace App\Game;
 
 class Game
 {

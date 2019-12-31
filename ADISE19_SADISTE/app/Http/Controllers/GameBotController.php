@@ -3,24 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Game\Game;
 
 class GameBotController extends Controller
 {
-     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+
+    private $game;
+    
     public function __construct()
     {
         $this->middleware('auth');
+        $this->game = new Game();
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
         return view('game_bot');

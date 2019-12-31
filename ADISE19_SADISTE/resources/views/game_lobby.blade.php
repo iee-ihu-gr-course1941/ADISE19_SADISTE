@@ -10,7 +10,11 @@
                 <div class="card-header"><h4>UNO Game</h4></div>
 
                 <div class="card-body">
-                    Game output //TODO
+                    <center>
+                        <h1>Choose your opponent</h1>
+                        <button onclick="window.location.href = 'game_bot'">Bot</button>
+                        <button action="">Player</button>
+                    </center>
                 </div>
             </div>
         </div>
@@ -19,7 +23,7 @@
                 <div class="card-header"><h4>Live Chat</h4></div>
 
                 <div class="card-body">
-                    Chat
+                    
                 </div>
            </div>
         </div>

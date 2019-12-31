@@ -1,6 +1,8 @@
 <?php
 
-abstract class Deck implements Countable
+namespace App\Game;
+
+abstract class Deck implements \Countable
 {
 
 protected $cards;
