@@ -21,6 +21,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/game', 'GameController@index')->name('game');
 
+Route::get('/lobby', 'GameLobbyController@index')->name('game_lobby');
+
+Route::get('/game_bot', 'GameBotController@index')->name('game_bot');
+
 Route::get('/about', 'AboutController@index')->name('about');
 
 Route::get('/profile/{username}', 'UserController@index')->name('profile.index');
