@@ -181,6 +181,21 @@ public function playCard($index)
     return False;
 }
 
+public function getStackCard()
+{
+    return $this->stackDeck->getTopCard();
+}
+
+public function getUserCards()
+{
+    return $this->usersDecks[0]->getCards();
+}
+
+public function getOpponentSizeOfDeck()
+{
+    return sizeof($this->usersDecks[1]->getCards());
+}
+
 public function shell()
 {
     $message = "";
