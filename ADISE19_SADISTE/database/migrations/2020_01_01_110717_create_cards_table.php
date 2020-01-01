@@ -1,49 +1,37 @@
 <?php
 
+use App\Enum\CardColor;
+use App\Enum\CardType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCardsTable extends Migration
-{
-    public function up()
-    {
+class CreateCardsTable extends Migration {
+    public function up() {
         Schema::create('cards', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->enum(
-                'color',
-                array(
-                    'red',
-                    'yellow',
-                    'green',
-                    'blue',
-                    'black'
-                )
-            );
-            $table->enum(
-                'type',
-                array(
-                    'zero',
-                    'one',
-                    'two',
-                    'three',
-                    'four',
-                    'five',
-                    'six',
-                    'seven',
-                    'eight',
-                    'nine',
-                    'reverse',
-                    'draw',
-                    'skip',
-                    'wild'
-                )
-            );
+
+            $colorsIterator = CardColor::getIterator();
+            $colors = [];
+
+            foreach ($colorsIterator as $key => $value) {
+                array_push($colors, $key);
+            }
+
+            $table->enum('color', $colors);
+
+            $typeIterator = CardType::getIterator();
+            $types = [];
+
+            foreach ($typeIterator as $key => $value) {
+                array_push($types, $key);
+            }
+
+            $table->enum('type', $types);
         });
     }
 
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('cards');
     }
 }
