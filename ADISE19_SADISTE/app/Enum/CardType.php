@@ -1,6 +1,6 @@
 <?php
 
-include_once "BasicEnum.php";
+namespace App\Enum;
 
 abstract class CardType extends BasicEnum
 {
@@ -19,5 +19,3 @@ abstract class CardType extends BasicEnum
     const skip = 12;
     const wild = 13;
 }
-
-?>

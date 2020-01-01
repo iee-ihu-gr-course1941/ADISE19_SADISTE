@@ -1,43 +1,41 @@
 <?php
 
-abstract class BasicEnum {
+namespace App\Enum;
 
-private static $constCacheArray = NULL;
+use ReflectionClass;
 
-private static function getConstants()
+abstract class BasicEnum
 {
-    if (self::$constCacheArray == NULL)
-    {
-        self::$constCacheArray = [];
-    }
-    $calledClass = get_called_class();
-    if (!array_key_exists($calledClass, self::$constCacheArray))
-    {
-        $reflect = new ReflectionClass($calledClass);
-        self::$constCacheArray[$calledClass] = $reflect->getConstants();
-    }
-    return self::$constCacheArray[$calledClass];
-}
+    private static $constCacheArray = NULL;
 
-public static function isValidName($name, $strict = false) 
-{
-    $constants = self::getConstants();
-
-    if ($strict)
+    private static function getConstants()
     {
-        return array_key_exists($name, $constants);
+        if (self::$constCacheArray == NULL) {
+            self::$constCacheArray = [];
+        }
+        $calledClass = get_called_class();
+        if (!array_key_exists($calledClass, self::$constCacheArray)) {
+            $reflect = new ReflectionClass($calledClass);
+            self::$constCacheArray[$calledClass] = $reflect->getConstants();
+        }
+        return self::$constCacheArray[$calledClass];
     }
 
-    $keys = array_map('strtolower', array_keys($constants));
-    return in_array(strtolower($name), $keys);
-}
+    public static function isValidName($name, $strict = false)
+    {
+        $constants = self::getConstants();
 
-public static function isValidValue($value, $strict = true)
-{
-    $values = array_values(self::getConstants());
-    return in_array($value, $values, $strict);
-}
+        if ($strict) {
+            return array_key_exists($name, $constants);
+        }
 
-}
+        $keys = array_map('strtolower', array_keys($constants));
+        return in_array(strtolower($name), $keys);
+    }
 
-?>
+    public static function isValidValue($value, $strict = true)
+    {
+        $values = array_values(self::getConstants());
+        return in_array($value, $values, $strict);
+    }
+}

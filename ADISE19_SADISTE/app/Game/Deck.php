@@ -1,34 +1,33 @@
 <?php
 
+namespace App\Game;
+
+use Countable;
+
 abstract class Deck implements Countable
 {
+    protected $cards;
 
-protected $cards;
-
-public function count()
-{
-    return sizeof($this->cards);
-}
-
-public function remove($index)
-{
-    unset($this->cards[$index]);
-    $this->cards = array_values($this->cards);
-}
-
-public function size()
-{
-    return sizeof($this->cards);
-}
-
-public function print()
-{
-    foreach($this->cards as $card)
+    public function count()
     {
-        $card->print();
+        return sizeof($this->cards);
+    }
+
+    public function remove($index)
+    {
+        unset($this->cards[$index]);
+        $this->cards = array_values($this->cards);
+    }
+
+    public function size()
+    {
+        return sizeof($this->cards);
+    }
+
+    public function print()
+    {
+        foreach ($this->cards as $card) {
+            $card->print();
+        }
     }
 }
-
-}
-
-?>

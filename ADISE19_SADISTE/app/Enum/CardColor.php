@@ -1,6 +1,6 @@
 <?php
 
-include_once "BasicEnum.php";
+namespace App\Enum;
 
 abstract class CardColor extends BasicEnum
 {
@@ -10,5 +10,3 @@ abstract class CardColor extends BasicEnum
     const yellow = 3;
     const black = 4;
 }
-
-?>
