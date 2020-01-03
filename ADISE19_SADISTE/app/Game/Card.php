@@ -2,51 +2,64 @@
 
 namespace App\Game;
 
-use Exception;
 use App\Enum\CardColor;
 use App\Enum\CardType;
 use Illuminate\Database\Eloquent\Model;
+use InvalidArgumentException;
 
-class Card extends Model
-{
+/**
+ * Model representing a single card.
+ */
+class Card extends Model {
+
+    protected $timestamps = false;
+
     private $color;
     private $type;
 
-    public function __construct($color, $type)
-    {
-        if (CardColor::isValidName($color)) {
-            $this->color = $color;
-        } else {
-            throw new Exception("Invalid color");
+    /**
+     * @param CardColor $color The card's color.
+     * @param CardType $type The card's type.
+     * @throws InvalidArgumentException if a card's type is invalid for its color.
+     */
+    public function __construct(CardColor $color, CardType $type) {
+        if ($color === CardColor::BLACK() && $type !== CardType::WILD() && $type !== CardType::DRAW()) {
+            throw new InvalidArgumentException('Black cards can only be wild or draw');
         }
 
-        if (CardType::isValidName($type)) {
-            $this->type = $type;
-        } else {
-            throw new Exception("Invalid type");
+        if ($type === CardType::WILD() && $color !== CardColor::BLACK()) {
+            throw new InvalidArgumentException('Wild cards can only be black');
         }
 
-        if ($color === 'black' && $type !== 'wild' && $type !== 'draw') {
-            throw new Exception('Black cards can only be wild or draw');
-        }
-
-        if ($type === 'wild' && $color !== 'black') {
-            throw new Exception('Wild cards can only be black');
-        }
+        $this->color = $color;
+        $this->type = $type;
     }
 
-    public function getColor()
-    {
+    /**
+     * @return string The string representation of the card.
+     */
+    public function __toString(): string {
+        return "Card{ color:" . $this->getColor() . ", type:" . $this->getType() . " }";
+    }
+
+    /**
+     * @return CardColor The card's color.
+     */
+    public function getColor(): CardColor {
         return $this->color;
     }
 
-    public function getType()
-    {
+    /**
+     * @return CardType The card's type.
+     */
+    public function getType(): CardType {
         return $this->type;
     }
 
-    public function print()
-    {
-        echo "Card{ color:" . $this->getColor() . ", type:" . $this->getType() . " }\n";
+    /**
+     * Prints the card's string representation.
+     */
+    public function print(): void {
+        echo $this . " }\n";
     }
 }

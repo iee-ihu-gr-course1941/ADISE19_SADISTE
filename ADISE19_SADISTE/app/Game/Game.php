@@ -2,6 +2,7 @@
 
 namespace App\Game;
 
+use App\Enum\CardColor;
 use Illuminate\Database\Eloquent\Model;
 use function reset;
 
@@ -44,13 +45,13 @@ class Game extends Model
         $stackCard = $this->stackDeck->getTopCard();
 
         return (
-            ($stackCard->getColor() == "black" && $playerCard->getColor() == $this->changedColor)
+            ($stackCard->getColor() === CardColor::BLACK() && $playerCard->getColor() === $this->changedColor)
             ||
-            ($playerCard->getColor() == "black")
+            ($playerCard->getColor() === CardColor::BLACK())
             ||
-            ($playerCard->getColor() == $stackCard->getColor())
+            ($playerCard->getColor() === $stackCard->getColor())
             ||
-            ($playerCard->getType() == $stackCard->getType()));
+            ($playerCard->getType() === $stackCard->getType()));
     }
 
     private function nextPlayer()

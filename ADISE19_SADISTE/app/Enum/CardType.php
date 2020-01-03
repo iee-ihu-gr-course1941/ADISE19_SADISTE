@@ -2,20 +2,38 @@
 
 namespace App\Enum;
 
-abstract class CardType extends BasicEnum
+use MyCLabs\Enum\Enum;
+
+/**
+ * @method static CardType ZERO()
+ * @method static CardType ONE()
+ * @method static CardType TWO()
+ * @method static CardType THREE()
+ * @method static CardType FOUR()
+ * @method static CardType FIVE()
+ * @method static CardType SIX()
+ * @method static CardType SEVEN()
+ * @method static CardType EIGHT()
+ * @method static CardType NINE()
+ * @method static CardType REVERSE()
+ * @method static CardType DRAW()
+ * @method static CardType SKIP()
+ * @method static CardType WILD()
+ */
+class CardType extends Enum
 {
-    const zero = 0;
-    const one = 1;
-    const two = 2;
-    const three = 3;
-    const four = 4;
-    const five = 5;
-    const six = 6;
-    const seven = 7;
-    const eight = 8;
-    const nine = 9;
-    const reverse = 10;
-    const draw = 11;
-    const skip = 12;
-    const wild = 13;
+    private const ZERO = 'zero';
+    private const ONE = 'one';
+    private const TWO = 'two';
+    private const THREE = 'three';
+    private const FOUR = 'four';
+    private const FIVE = 'five';
+    private const SIX = 'six';
+    private const SEVEN = 'seven';
+    private const EIGHT = 'eight';
+    private const NINE = 'nine';
+    private const REVERSE = 'reverse';
+    private const DRAW = 'draw';
+    private const SKIP = 'skip';
+    private const WILD = 'wild';
 }

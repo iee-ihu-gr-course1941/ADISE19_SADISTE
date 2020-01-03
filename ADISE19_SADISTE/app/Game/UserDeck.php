@@ -2,38 +2,56 @@
 
 namespace App\Game;
 
-class UserDeck extends Deck
-{
+use OutOfRangeException;
 
-    public function __construct()
-    {
+/**
+ * The deck from which a player plays.
+ */
+class UserDeck extends Deck {
+    public function __construct() {
         $this->cards = array();
     }
 
-    public function addCard($card)
-    {
+    /**
+     * Add a card to the end of the deck.
+     * @param Card $card The card to add.
+     */
+    public function addCard(Card $card): void {
         $this->cards[sizeof($this->cards)] = $card;
     }
 
-    public function getCards()
-    {
+    /**
+     * @return array All the cards in the deck.
+     */
+    public function getCards(): array {
         return $this->cards;
     }
 
-    public function getCard($index)
-    {
+    /**
+     * Get the card at the specified index.
+     *
+     * @param int $index The index from which to get the card.
+     * @return Card The card at the specified index.
+     * @throws OutOfRangeException if the index is less than 0 or greater or equal to the deck's size.
+     */
+    public function getCard(int $index): Card {
         return $this->cards[$index];
     }
 
-    public function pickCard($index)
-    {
+    /**
+     * Get a card at the specified index and remove it from the deck.
+     *
+     * @param int $index The index from which to get the card.
+     * @return Card The card at the specified index.
+     * @throws OutOfRangeException if the index is less than 0 or greater or equal to the deck's size.
+     */
+    public function pickCard(int $index): Card {
         $card = $this->cards[$index];
         $this->remove($index);
         return $card;
     }
 
-    public function print()
-    {
+    public function print() {
         foreach ($this->cards as $card) {
             $card->print();
         }
