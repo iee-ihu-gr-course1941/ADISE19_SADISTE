@@ -2,19 +2,32 @@
 
 namespace App\Game;
 
+use App\Casts\CardColorCast;
+use App\Casts\CardTypeCast;
 use App\Enum\CardColor;
 use App\Enum\CardType;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
+use Vkovic\LaravelCustomCasts\HasCustomCasts;
 
 /**
  * Model representing a single card.
  */
 class Card extends Model {
 
+    use HasCustomCasts;
+
     public $timestamps = false;
 
     protected $fillable = ['color', 'type'];
+    protected $attributes = [
+        'color' => null,
+        'type' => null,
+    ];
+    protected $casts = [
+        'color' => CardColorCast::class,
+        'type' => CardTypeCast::class,
+    ];
 
     private $color;
     private $type;
@@ -27,43 +40,19 @@ class Card extends Model {
     }
 
     /**
-     * @return CardColor The card's color.
-     */
-    public function getColor() {
-        return $this->color;
-    }
-
-    /**
-     * @return CardType The card's type.
-     */
-    public function getType() {
-        return $this->type;
-    }
-
-    /**
      * @throws InvalidArgumentException if there is a mismatch between card type and color.
      */
     public function setColorAttribute($value) {
-        $value = strval($value);
-        $color = new CardColor($value);
-
-        $this->validateColorTypeCombination($color, $this->type);
-
+        validateColorTypeCombination($value, $this->attributes['type']);
         $this->attributes['color'] = $value;
-        $this->color = $color;
     }
 
     /**
      * @throws InvalidArgumentException if there is a mismatch between card type and color.
      */
     public function setTypeAttribute($value) {
-        $value = strval($value);
-        $type = new CardType($value);
-
-        $this->validateColorTypeCombination($this->color, $type);
-
+        validateColorTypeCombination($this->attributes['color'], $value);
         $this->attributes['type'] = $value;
-        $this->type = $type;
     }
 
     /**
@@ -72,16 +61,16 @@ class Card extends Model {
     public function print(): void {
         echo $this . " }\n";
     }
+}
 
-    private function validateColorTypeCombination(CardColor $color = null, CardType $type = null) {
-        if ($color !== null && $type !== null) {
-            if ($color == CardColor::BLACK() && $type != CardType::WILD() && $type != CardType::DRAW()) {
-                throw new InvalidArgumentException('Black cards can only be wild or draw');
-            }
+function validateColorTypeCombination(CardColor $color = null, CardType $type = null) {
+    if ($color != null && $type != null) {
+        if ($color == CardColor::BLACK() && $type != CardType::WILD() && $type != CardType::DRAW()) {
+            throw new InvalidArgumentException('Black cards can only be wild or draw');
+        }
 
-            if ($type == CardType::WILD() && $color != CardColor::BLACK()) {
-                throw new InvalidArgumentException('Wild cards can only be black');
-            }
+        if ($type == CardType::WILD() && $color != CardColor::BLACK()) {
+            throw new InvalidArgumentException('Wild cards can only be black');
         }
     }
 }
