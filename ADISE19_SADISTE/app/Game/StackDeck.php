@@ -5,51 +5,42 @@ namespace App\Game;
 /**
  * A deck to which players play cards.
  */
-class StackDeck extends Deck
-{
-    public function __construct()
-    {
-        $this->cards = array();
-    }
+class StackDeck extends Deck {
 
     /**
      * @param Card $card The card to add to the top of the deck.
      */
-    public function addCard(Card $card): void
-    {
-        $this->cards[sizeof($this->cards)] = $card;
+    public function addCard(Card $card): void {
+        $this->attributes['cards'][$this->count()] = $card;
     }
 
     /**
      * @return array All cards except the top one from the deck.
      */
-    public function getCardsForDrawDeck(): array
-    {
-        $topCard = $this->cards[sizeof($this->cards) - 1];
-        $this->remove(sizeof($this->cards) - 1);
-        $cards = $this->cards;
-        $this->cards = array();
-        $this->addCard($topCard);
+    public function getCardsForDrawDeck(): array{
+        $topCard = $this->attributes['cards'][$this->count() - 1];
+        $this->remove($this->count() - 1);
+
+        $cards = $this->attributes['cards'];
+        $this->cards = [$topCard];
+
         return $cards;
     }
 
-    public function showTopCard(): void
-    {
+    public function showTopCard(): void {
         echo "Stack top card: ";
-        $this->cards[sizeof($this->cards) - 1]->print();
+        $this->attributes['cards'][$this->count() - 1]->print();
     }
 
     /**
      * @return Card The top card of the deck.
      */
-    public function getTopCard(): Card
-    {
-        return $this->cards[sizeof($this->cards) - 1];
+    public function getTopCard(): Card {
+        return $this->attributes['cards'][$this->count() - 1];
     }
 
-    public function print()
-    {
-        foreach ($this->cards as $card) {
+    public function print() {
+        foreach ($this->attributes['cards'] as $card) {
             $card->print();
         }
     }
