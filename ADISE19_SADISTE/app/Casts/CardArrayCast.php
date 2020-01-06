@@ -14,13 +14,18 @@ class CardArrayCast extends CustomCastBase {
             $array[$index] = $card->id;
         }
 
-        return $array;
+        $json = json_encode($array);
+        return $json;
     }
 
     public function castAttribute($value) {
-        if ($value != '') {
-            $cardIDsArray = json_decode($value);
-            return Card::whereIn('id', $cardIDsArray)->get()->all();
+        if (gettype($value) == 'string') {
+            if ($value != '') {
+                $cardIDsArray = json_decode($value);
+                return Card::whereIn('id', $cardIDsArray)->get()->all();
+            } else {
+                return [];
+            }
         } else {
             return [];
         }

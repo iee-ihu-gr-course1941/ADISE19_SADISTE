@@ -6,8 +6,11 @@ use App\Casts\CardArrayCast;
 use Countable;
 use Illuminate\Database\Eloquent\Model;
 use OutOfRangeException;
+use Vkovic\LaravelCustomCasts\HasCustomCasts;
 
 abstract class Deck extends Model implements Countable {
+
+    use HasCustomCasts;
 
     public $timestamps = false;
 
@@ -34,7 +37,7 @@ abstract class Deck extends Model implements Countable {
      * @throws OutOfRangeException if the provided index is less than 0 or greater or equal to the size of the deck.
      */
     public function getCard(int $index): Card {
-        return Card::find($this->cards[$index]);
+        return $this->attributes['cards'][$index];
     }
 
     /**
