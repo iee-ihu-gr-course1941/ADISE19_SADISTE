@@ -65,4 +65,26 @@ php artisan serve
 ```
 
 ### Περιγραφή API
-...
+
+#### Login
+```
+POST /login
+```
+
+### Το μοντέλο του παιχνιδιού
+
+#### Attributes
+- clockwiseRotation
+- stackPlusCards //TODO
+- currentPlayer
+- playingOrder
+- drawDeck
+- stackDeck
+- usersDecks
+
+#### Functions
+- isLegalMove
+- nextPlayer
+- changeRotation
+- draw
+- playCard
