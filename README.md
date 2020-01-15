@@ -7,6 +7,9 @@
 
 ---
 
+### Demo Page
+http://sadiste.ddns.net
+
 ### Απαιτούμενο λογισμικό
 Για να μπορέσετε να τρέξετε το project θα χρειαστείτε:
 * Laravel
@@ -43,7 +46,7 @@ cp .env.example .env
 
 * Στο αρχείο .env αλλάξτε τις προεπιλεγμένες ρυθμίσεις.
 
-#### Παράδειγμα
+##### Παράδειγμα
 ```
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
@@ -52,3 +55,14 @@ DB_DATABASE=root
 DB_USERNAME=root
 DB_PASSWORD=toor
 ```
+
+### Εκτέλεση του προγράμματος
+
+* Μεταβείτε στον κατάλογο που βρίσκεται το project
+* Ξεκινήστε τον server με τον aritsan
+```bash
+php artisan serve
+```
+
+### Περιγραφή API
+...
